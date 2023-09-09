@@ -4,8 +4,7 @@ import json
 client = boto3.client('dynamodb')
 
 def lambda_handler(event, context):
-    
-    
+     
     # need to pull current value of counter then add +1
     # then update value in dynamo
     data = client.update_item(
@@ -16,7 +15,7 @@ def lambda_handler(event, context):
         "#ct": 'count',
         },
         ExpressionAttributeValues={
-            ":ct":{"N":"1"}
+            ":ct":{"N":"1"}                             
         },
         UpdateExpression="SET #ct = #ct + :ct",
         TableName='visitors_counter',
