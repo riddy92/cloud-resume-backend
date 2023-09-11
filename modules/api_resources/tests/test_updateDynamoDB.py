@@ -3,6 +3,8 @@ import sys
 import pytest
 from moto import mock_dynamodb
 import boto3
+import json
+
 
 
 sys.path.insert(0, '../updateDynamoDB')
@@ -118,7 +120,7 @@ def dynamodb_table(dynamodb):
     yield
 
 
-def test_update_item(dynamodb,monkeypatch,dynamodb_table):
+def test_status_code(dynamodb,monkeypatch,dynamodb_table):
     from updateDynamoDB.lambda_function import lambda_handler
     from updateDynamoDB import lambda_function
     client = dynamodb
@@ -126,7 +128,17 @@ def test_update_item(dynamodb,monkeypatch,dynamodb_table):
     response = lambda_handler(event,context=None)
     # assert response["ResponseMetadata"]["HTTPStatusCode"] == 200
     assert response["statusCode"] == 200
-    # return response
+    
+
+def test_update_item(dynamodb,monkeypatch,dynamodb_table):
+    from updateDynamoDB.lambda_function import lambda_handler
+    from updateDynamoDB import lambda_function
+    client = dynamodb
+    monkeypatch.setattr(lambda_function,"client",client) 
+    response = lambda_handler(event,context=None)
+    body = json.loads(response["body"])
+    assert body["Attributes"]["count"]["N"] == "2"
+    
 
 
 
