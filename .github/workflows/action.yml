@@ -2,7 +2,7 @@ name: Cloud Resume Backend Package
 
 run-name: Deploy to AWS by @${{ github.actor }}
 
-on: [push]
+on: push
 
     jobs:
         run-tests:
