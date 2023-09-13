@@ -4,6 +4,7 @@ data "archive_file" "lambda_update_dynamo_db" {
   type = "zip"
 
   source_dir  = "${path.module}/updateDynamoDB"
+  excludes    = ["__pycache__"]
   output_path = "${path.module}/updateDynamoDB.zip"
 }
 
@@ -13,7 +14,6 @@ resource "aws_s3_object" "lambda_update_dynamo_db" {
   key    = "updateDynamoDB.zip"
   source = data.archive_file.lambda_update_dynamo_db.output_path
 
-  
 }
 
 import {
@@ -27,7 +27,7 @@ resource "aws_lambda_function" "update-dynamo-db" {
   architectures                  = ["x86_64"]
   code_signing_config_arn        = null
   description                    = null
-  filename                       = null
+  filename                       = data.archive_file.lambda_update_dynamo_db.output_path
   function_name                  = "updateDynamoDB"
   handler                        = "lambda_function.lambda_handler"
   image_uri                      = null
@@ -39,11 +39,11 @@ resource "aws_lambda_function" "update-dynamo-db" {
   reserved_concurrent_executions = -1
   role                           = aws_iam_role.lambda_exec.arn
   runtime                        = "python3.10"
-  s3_bucket                      = aws_s3_bucket.lambda_bucket.id
-  s3_key                         = aws_s3_object.lambda_update_dynamo_db.key
+  s3_bucket                      = null
+  s3_key                         = null
   s3_object_version              = null
   skip_destroy                   = false
-  source_code_hash               = "YCLHWBW7PkHy1aXjAiMmfmjmHbHOujFVx66Mz2LvDrE="
+  source_code_hash               = data.archive_file.lambda_update_dynamo_db.output_base64sha256
   tags                           = {}
   tags_all                       = {}
   timeout                        = 3
