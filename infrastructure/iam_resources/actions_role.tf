@@ -54,7 +54,8 @@ resource "aws_iam_policy" "additional" {
 				        "iam:DeletePolicyVersion",
 				        "iam:SetDefaultPolicyVersion",
                 "iam:GetPolicy",
-				        "iam:GetRole"
+				        "iam:GetRole",
+                "iam:ListRolePolicies"
             ],
             "Resource": [
                 "*"
