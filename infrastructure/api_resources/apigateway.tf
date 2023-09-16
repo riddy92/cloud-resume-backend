@@ -1,7 +1,9 @@
+/*
 import {
     to = aws_apigatewayv2_api.lambda
     id = ***REMOVED***
 }
+*/
 
 resource "aws_apigatewayv2_api" "lambda" {
   api_key_selection_expression = "$request.header.x-api-key"
@@ -28,10 +30,12 @@ resource "aws_apigatewayv2_api" "lambda" {
   }
 }
 
+/*
 import {
     to = aws_apigatewayv2_stage.lambda
     id = ***REMOVED***
 }
+*/
 
 resource "aws_apigatewayv2_stage" "lambda" {
   api_id                = ***REMOVED***
@@ -56,10 +60,12 @@ resource "aws_apigatewayv2_stage" "lambda" {
   }
 }
 
+/*
 import {
     to = aws_apigatewayv2_integration.update-dynamo-db
     id = ***REMOVED***
 }
+*/
 
 resource "aws_apigatewayv2_integration" "update-dynamo-db" {
   api_id                        = ***REMOVED***
@@ -80,10 +86,12 @@ resource "aws_apigatewayv2_integration" "update-dynamo-db" {
   timeout_milliseconds          = 30000
 }
 
+/*
 import {
     to = aws_apigatewayv2_route.update-dynamo-db
     id = "y6v9mkpq3b/1yeaj5m"
 }
+*/
 
 resource "aws_apigatewayv2_route" "update-dynamo-db" {
   api_id                              = ***REMOVED***
@@ -99,10 +107,12 @@ resource "aws_apigatewayv2_route" "update-dynamo-db" {
   target                              = "integrations/${aws_apigatewayv2_integration.update-dynamo-db.id}"
 }
 
+/*
 import {
     to = aws_cloudwatch_log_group.api_gw
     id = "/aws/ApiGateway/updateDynamoDB-API"
 }
+*/
 
 resource "aws_cloudwatch_log_group" "api_gw" {
   kms_key_id        = null
@@ -114,10 +124,12 @@ resource "aws_cloudwatch_log_group" "api_gw" {
   tags_all          = {}
 }
 
+/*
 import {
     to = aws_lambda_permission.api_gw
     id = "updateDynamoDB/lambda-a19b4956-0fcf-49ef-8126-29fd1f072138"
 }
+*/
 
 resource "aws_lambda_permission" "api_gw" {
   action                 = "lambda:InvokeFunction"

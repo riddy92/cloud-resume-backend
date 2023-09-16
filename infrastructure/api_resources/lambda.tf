@@ -16,10 +16,12 @@ resource "aws_s3_object" "lambda_update_dynamo_db" {
 
 }
 
+/*
 import {
     to = aws_lambda_function.update-dynamo-db
     id = "updateDynamoDB"
 }
+*/
 
 
 
@@ -55,10 +57,12 @@ resource "aws_lambda_function" "update-dynamo-db" {
   }
 }
 
+/*
 import {
     to = aws_cloudwatch_log_group.lambda_function
     id = "/aws/lambda/updateDynamoDB"
 }
+*/
 
 resource "aws_cloudwatch_log_group" "lambda_function" {
   kms_key_id        = null

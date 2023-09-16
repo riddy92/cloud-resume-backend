@@ -37,7 +37,7 @@ jobs:
 
         defaults:
           run:
-            working-directory: ../
+            working-directory: ./
 
         permissions:
           id-token: write # This is required for requesting the JWT
@@ -60,7 +60,9 @@ jobs:
                 terraform_version: 1.5.7
             
             - name: Initialize Terraform
-              run: terraform init
+              run: | 
+                cd infrastructure/api_resources
+                terraform init
 
             - name: Terraform Plan
               run: terraform plan
