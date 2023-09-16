@@ -61,17 +61,15 @@ jobs:
               with:
                 terraform_version: 1.5.7
             
-            - name: Initialize Terraform
-              run: terraform init
+            # - name: Initialize Terraform
+            #   run: terraform init
 
-            - name: Terraform Plan
+            - name: Terraform Plan & Apply
               run: |
                 cd infrastructure/api_resources
                 terraform init
                 terraform plan
-
-            - name: Terraform Apply
-              run: terraform apply -auto-approve
+                terraform apply -auto-approve
               
 
 
