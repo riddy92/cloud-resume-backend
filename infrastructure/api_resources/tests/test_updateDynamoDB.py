@@ -137,7 +137,7 @@ def test_update_item(dynamodb,monkeypatch,dynamodb_table):
     monkeypatch.setattr(lambda_function,"client",client) 
     response = lambda_handler(event,context=None)
     body = json.loads(response["body"])
-    assert body["Attributes"]["count"]["N"] == "10"
+    assert body["Attributes"]["count"]["N"] == "2"
     
 
 

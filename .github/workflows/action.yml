@@ -64,12 +64,19 @@ jobs:
             # - name: Initialize Terraform
             #   run: terraform init
 
-            - name: Terraform Plan & Apply
+            - name: Terraform Plan & Apply api_resources
               run: |
                 cd infrastructure/api_resources
                 terraform init
                 terraform plan
-                terraform apply -auto-approve
+                # terraform apply -auto-approve
+
+            - name: Terraform Plan & Apply iam_resources
+              run: |
+                cd infrastructure/iam_resources
+                terraform init
+                terraform plan
+                # terraform apply -auto-approve
               
 
 
