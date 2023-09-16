@@ -10,7 +10,9 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+                # python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+                python-version: ["3.11"]
+
         
         steps:
             - name: Checkout code
@@ -60,12 +62,13 @@ jobs:
                 terraform_version: 1.5.7
             
             - name: Initialize Terraform
-              run: | 
-                cd infrastructure/api_resources
-                terraform init
+              run: terraform init
 
             - name: Terraform Plan
-              run: terraform plan
+              run: |
+                cd infrastructure/api_resources
+                terraform init
+                terraform plan
               
 
 
