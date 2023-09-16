@@ -55,7 +55,10 @@ resource "aws_iam_policy" "additional" {
 				        "iam:SetDefaultPolicyVersion",
                 "iam:GetPolicy",
 				        "iam:GetRole",
-                "iam:ListRolePolicies"
+                "iam:ListRolePolicies",
+                "iam:List*",
+                "iam:Get*"
+
             ],
             "Resource": [
                 "*"
