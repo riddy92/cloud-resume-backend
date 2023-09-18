@@ -16,13 +16,20 @@ resource "aws_s3_object" "lambda_update_dynamo_db" {
 
 }
 
-/*
-import {
-    to = aws_lambda_function.update-dynamo-db
-    id = "updateDynamoDB"
-}
-*/
 
+resource "aws_iam_role" "lambda_exec" {
+  assume_role_policy    = "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}"
+  description           = null
+  force_detach_policies = false
+  managed_policy_arns   = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole", "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"]
+  max_session_duration  = 3600
+  name                  = "updateDynamoDB-role-yjfauews"
+  name_prefix           = null
+  path                  = "/service-role/"
+  permissions_boundary  = null
+  tags                  = {}
+  tags_all              = {}
+}
 
 
 resource "aws_lambda_function" "update-dynamo-db" {

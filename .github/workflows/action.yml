@@ -32,7 +32,9 @@ jobs:
 
             - name: Run tests
               run: pytest
-    terraform:
+
+              
+    terraform_api:
         needs: ['run-tests']
 
         runs-on: ubuntu-latest
@@ -72,7 +74,7 @@ jobs:
                 # terraform apply -auto-approve
 
     
-    terraform2:
+    terraform_iam:
       needs: ['run-tests']
 
       runs-on: ubuntu-latest

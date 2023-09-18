@@ -1,9 +1,4 @@
-/*
-import {
-    to = aws_apigatewayv2_api.lambda
-    id = ***REMOVED***
-}
-*/
+
 
 resource "aws_apigatewayv2_api" "lambda" {
   api_key_selection_expression = "$request.header.x-api-key"
@@ -30,15 +25,14 @@ resource "aws_apigatewayv2_api" "lambda" {
   }
 }
 
-/*
-import {
-    to = aws_apigatewayv2_stage.lambda
-    id = ***REMOVED***
+resource "aws_apigatewayv2_deployment" "lambda" {
+  api_id      = aws_apigatewayv2_api.lambda.id
+  description = "Automatic deployment triggered by changes to the Api configuration"
+  triggers    = null
 }
-*/
 
 resource "aws_apigatewayv2_stage" "lambda" {
-  api_id                = ***REMOVED***
+  api_id                = aws_apigatewayv2_api.lambda.id
   auto_deploy           = true
   client_certificate_id = null
   deployment_id         = aws_apigatewayv2_deployment.lambda.id
@@ -60,15 +54,10 @@ resource "aws_apigatewayv2_stage" "lambda" {
   }
 }
 
-/*
-import {
-    to = aws_apigatewayv2_integration.update-dynamo-db
-    id = ***REMOVED***
-}
-*/
+
 
 resource "aws_apigatewayv2_integration" "update-dynamo-db" {
-  api_id                        = ***REMOVED***
+  api_id                        = aws_apigatewayv2_api.lambda.id
   connection_id                 = null
   connection_type               = "INTERNET"
   content_handling_strategy     = null
@@ -86,15 +75,10 @@ resource "aws_apigatewayv2_integration" "update-dynamo-db" {
   timeout_milliseconds          = 30000
 }
 
-/*
-import {
-    to = aws_apigatewayv2_route.update-dynamo-db
-    id = "y6v9mkpq3b/1yeaj5m"
-}
-*/
+
 
 resource "aws_apigatewayv2_route" "update-dynamo-db" {
-  api_id                              = ***REMOVED***
+  api_id                              = aws_apigatewayv2_api.lambda.id
   api_key_required                    = false
   authorization_scopes                = []
   authorization_type                  = "NONE"
@@ -107,16 +91,11 @@ resource "aws_apigatewayv2_route" "update-dynamo-db" {
   target                              = "integrations/${aws_apigatewayv2_integration.update-dynamo-db.id}"
 }
 
-/*
-import {
-    to = aws_cloudwatch_log_group.api_gw
-    id = "/aws/ApiGateway/updateDynamoDB-API"
-}
-*/
+
 
 resource "aws_cloudwatch_log_group" "api_gw" {
   kms_key_id        = null
-  name              = "/aws/ApiGateway/updateDynamoDB-API"
+  name              = "/aws/ApiGateway/${aws_apigatewayv2_api.lambda.name}"
   name_prefix       = null
   retention_in_days = 0
   skip_destroy      = null
@@ -124,12 +103,7 @@ resource "aws_cloudwatch_log_group" "api_gw" {
   tags_all          = {}
 }
 
-/*
-import {
-    to = aws_lambda_permission.api_gw
-    id = "updateDynamoDB/lambda-a19b4956-0fcf-49ef-8126-29fd1f072138"
-}
-*/
+
 
 resource "aws_lambda_permission" "api_gw" {
   action                 = "lambda:InvokeFunction"
@@ -140,7 +114,8 @@ resource "aws_lambda_permission" "api_gw" {
   principal_org_id       = null
   qualifier              = null
   source_account         = null
-  source_arn             = ***REMOVED***
+  source_arn             = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*/updateDynamoDB"
   statement_id           = "lambda-a19b4956-0fcf-49ef-8126-29fd1f072138"
   statement_id_prefix    = null
 }
+

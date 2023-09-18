@@ -1,9 +1,4 @@
-/*
-import {
-    to = aws_dynamodb_table.dynamo_update_dynamo_db
-    id = "visitors_counter"
-}
-*/
+
 
 resource "aws_dynamodb_table" "dynamo_update_dynamo_db" {
   billing_mode                = "PROVISIONED"
