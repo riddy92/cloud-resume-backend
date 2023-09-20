@@ -114,11 +114,13 @@ jobs:
         - name: Terraform Apply api_resources
           run: |
             cd infrastructure/api_resources
+            terraform init
             terraform apply -auto-approve
         
         - name: Terraform Apply iam_resources
           run: |
             cd infrastructure/iam_resources
+            terraform init
             terraform apply -auto-approve
         
         
