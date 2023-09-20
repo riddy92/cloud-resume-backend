@@ -33,8 +33,7 @@ jobs:
             - name: Run tests
               run: pytest
 
-              
-    terraform_api:
+    terraform_plan:
         needs: ['run-tests']
 
         runs-on: ubuntu-latest
@@ -46,48 +45,8 @@ jobs:
         permissions:
           id-token: write # This is required for requesting the JWT
           contents: read  # This is required for actions/checkout
-       
+        
         steps:
-            - name: Git clone the repository
-              uses: actions/checkout@v3
-
-            - name: configure aws credentials
-              uses: aws-actions/configure-aws-credentials@v3
-              with:
-                role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
-                role-duration-seconds: 900
-                aws-region: us-east-1
-
-            - name: Use Terraform 1.5.7
-              uses: hashicorp/setup-terraform@v2
-              with:
-                terraform_version: 1.5.7
-            
-            # - name: Initialize Terraform
-            #   run: terraform init
-
-            - name: Terraform Plan & Apply api_resources
-              run: |
-                cd infrastructure/api_resources
-                terraform init
-                terraform plan
-                # terraform apply -auto-approve
-
-    
-    terraform_iam:
-      needs: ['run-tests']
-
-      runs-on: ubuntu-latest
-
-      defaults:
-        run:
-          working-directory: ./
-
-      permissions:
-        id-token: write # This is required for requesting the JWT
-        contents: read  # This is required for actions/checkout
-     
-      steps:
           - name: Git clone the repository
             uses: actions/checkout@v3
 
@@ -102,13 +61,142 @@ jobs:
             uses: hashicorp/setup-terraform@v2
             with:
               terraform_version: 1.5.7
+          
+          # - name: Initialize Terraform
+          #   run: terraform init
 
-          - name: Terraform Plan & Apply iam_resources
+          - name: Terraform Plan api_resources
+            run: |
+              cd infrastructure/api_resources
+              terraform init
+              terraform plan
+          
+          - name: Terraform Plan iam_resources
             run: |
               cd infrastructure/iam_resources
               terraform init
               terraform plan
-              # terraform apply -auto-approve
+      
+    terraform_apply:
+      needs: ['run-tests','terraform_plan']
+
+      runs-on: ubuntu-latest
+
+      environment: 'dev'
+
+      defaults:
+        run:
+          working-directory: ./
+
+      permissions:
+        id-token: write # This is required for requesting the JWT
+        contents: read  # This is required for actions/checkout
+      
+      steps:
+        - name: Git clone the repository
+          uses: actions/checkout@v3
+
+        - name: configure aws credentials
+          uses: aws-actions/configure-aws-credentials@v3
+          with:
+            role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+            role-duration-seconds: 900
+            aws-region: us-east-1
+
+        - name: Use Terraform 1.5.7
+          uses: hashicorp/setup-terraform@v2
+          with:
+            terraform_version: 1.5.7
+        
+        # - name: Initialize Terraform
+        #   run: terraform init
+
+        - name: Terraform Apply api_resources
+          run: |
+            cd infrastructure/api_resources
+            terraform apply -auto-approve
+        
+        - name: Terraform Apply iam_resources
+          run: |
+            cd infrastructure/iam_resources
+            terraform apply -auto-approve
+        
+        
+    # terraform_api:
+    #     needs: ['run-tests']
+
+    #     runs-on: ubuntu-latest
+
+    #     defaults:
+    #       run:
+    #         working-directory: ./
+
+    #     permissions:
+    #       id-token: write # This is required for requesting the JWT
+    #       contents: read  # This is required for actions/checkout
+       
+    #     steps:
+    #         - name: Git clone the repository
+    #           uses: actions/checkout@v3
+
+    #         - name: configure aws credentials
+    #           uses: aws-actions/configure-aws-credentials@v3
+    #           with:
+    #             role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+    #             role-duration-seconds: 900
+    #             aws-region: us-east-1
+
+    #         - name: Use Terraform 1.5.7
+    #           uses: hashicorp/setup-terraform@v2
+    #           with:
+    #             terraform_version: 1.5.7
+            
+    #         # - name: Initialize Terraform
+    #         #   run: terraform init
+
+    #         - name: Terraform Plan & Apply api_resources
+    #           run: |
+    #             cd infrastructure/api_resources
+    #             terraform init
+    #             terraform plan
+    #             # terraform apply -auto-approve
+
+    
+    # terraform_iam:
+    #   needs: ['run-tests']
+
+    #   runs-on: ubuntu-latest
+
+    #   defaults:
+    #     run:
+    #       working-directory: ./
+
+    #   permissions:
+    #     id-token: write # This is required for requesting the JWT
+    #     contents: read  # This is required for actions/checkout
+     
+    #   steps:
+    #       - name: Git clone the repository
+    #         uses: actions/checkout@v3
+
+    #       - name: configure aws credentials
+    #         uses: aws-actions/configure-aws-credentials@v3
+    #         with:
+    #           role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+    #           role-duration-seconds: 900
+    #           aws-region: us-east-1
+
+    #       - name: Use Terraform 1.5.7
+    #         uses: hashicorp/setup-terraform@v2
+    #         with:
+    #           terraform_version: 1.5.7
+
+    #       - name: Terraform Plan & Apply iam_resources
+    #         run: |
+    #           cd infrastructure/iam_resources
+    #           terraform init
+    #           terraform plan
+    #           # terraform apply -auto-approve
 
 
 
