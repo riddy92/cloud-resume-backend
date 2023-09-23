@@ -122,7 +122,22 @@ jobs:
             cd infrastructure/iam_resources
             terraform init
             terraform apply -auto-approve
+    
+    
+    cypress_smoke:
+      needs: ['run-tests','terraform_plan','terraform_apply']
         
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        # Install npm dependencies, cache them correctly
+        # and run all Cypress tests
+        - name: Cypress run
+          uses: cypress-io/github-action@v6
+
+
 
 
 
