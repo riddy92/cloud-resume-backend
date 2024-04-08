@@ -1,7 +1,7 @@
 import os
 import sys
 import pytest
-from moto import mock_dynamodb
+from moto import mock_aws
 import boto3
 import json
 
