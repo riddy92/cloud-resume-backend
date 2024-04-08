@@ -57,6 +57,7 @@ resource "aws_iam_policy" "additional" {
                 "iam:GetPolicy",
 				        "iam:GetRole",
                 "iam:ListRolePolicies",
+                "iam:UpdateOpenIDConnectProviderThumbprint",
                 "iam:List*",
                 "iam:Get*"
 
