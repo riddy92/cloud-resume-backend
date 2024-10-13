@@ -54,6 +54,29 @@ resource "aws_apigatewayv2_stage" "lambda" {
   }
 }
 
+resource "aws_apigatewayv2_stage" "lambda_dev" {
+  api_id                = aws_apigatewayv2_api.lambda.id
+  auto_deploy           = true
+  client_certificate_id = null
+  deployment_id         = aws_apigatewayv2_deployment.lambda.id
+  description           = "Created by AWS Lambda"
+  name                  = "dev"
+  stage_variables       = {}
+  tags                  = {}
+  tags_all              = {}
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.api_gw.arn
+    format          = "$context.identity.sourceIp - - [$context.requestTime] \"$context.httpMethod $context.routeKey $context.protocol\" $context.status $context.responseLength $context.requestId $context.integrationErrorMessage"
+  }
+  default_route_settings {
+    data_trace_enabled       = false
+    detailed_metrics_enabled = false
+    logging_level            = null
+    throttling_burst_limit   = 0
+    throttling_rate_limit    = 0
+  }
+}
+
 
 
 resource "aws_apigatewayv2_integration" "update-dynamo-db" {
