@@ -119,7 +119,7 @@ def dynamodb_table(dynamodb):
             'N': '2',
         },
         'count': {
-            'N': '2',
+            'N': '1',
         },
     },
     ReturnConsumedCapacity='TOTAL',
