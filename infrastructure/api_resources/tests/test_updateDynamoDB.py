@@ -112,6 +112,19 @@ def dynamodb_table(dynamodb):
     ReturnConsumedCapacity='TOTAL',
     TableName='visitors_counter',
     )
+
+    dynamodb.put_item(
+    Item={
+        'count id': {
+            'N': '2',
+        },
+        'count': {
+            'N': '2',
+        },
+    },
+    ReturnConsumedCapacity='TOTAL',
+    TableName='visitors_counter',
+    )
      
     #wait for table to be in ACTIVE state
     waiter = dynamodb.get_waiter("table_exists")
