@@ -43,7 +43,7 @@ resource "aws_apigatewayv2_stage" "lambda" {
   tags_all              = {}
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_gw.arn
-    format          = "$context.identity.sourceIp - - [$context.requestTime] \"$context.httpMethod $context.routeKey $context.protocol\" $context.status $context.responseLength $context.requestId $context.integrationErrorMessage"
+    format          = "$context.identity.sourceIp - - [$context.requestTime] \"$context.httpMethod $context.routeKey $context.stage $context.protocol\" $context.status $context.responseLength $context.requestId $context.integrationErrorMessage"
   }
   default_route_settings {
     data_trace_enabled       = false
@@ -66,7 +66,7 @@ resource "aws_apigatewayv2_stage" "lambda_dev" {
   tags_all              = {}
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_gw.arn
-    format          = "$context.identity.sourceIp - - [$context.requestTime] \"$context.httpMethod $context.routeKey $context.protocol\" $context.status $context.responseLength $context.requestId $context.integrationErrorMessage"
+    format          = "$context.identity.sourceIp - - [$context.requestTime] \"$context.httpMethod $context.routeKey $context.stage $context.protocol\" $context.status $context.responseLength $context.requestId $context.integrationErrorMessage"
   }
   default_route_settings {
     data_trace_enabled       = false
