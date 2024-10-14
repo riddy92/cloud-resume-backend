@@ -5,7 +5,7 @@ client = boto3.client('dynamodb')
 
 def lambda_handler(event, context):
 
-    stage = event.get('stage')
+    stage = event.get("requestContext")["stage"]
 
     if stage == '$default':
      
