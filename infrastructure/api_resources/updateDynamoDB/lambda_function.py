@@ -7,7 +7,7 @@ def lambda_handler(event, context):
 
     stage = event.get("requestContext")["stage"]
 
-    if stage == '$default':
+    if stage == 'default':
      
         # need to pull current value of counter then add +1
         # then update value in dynamo
