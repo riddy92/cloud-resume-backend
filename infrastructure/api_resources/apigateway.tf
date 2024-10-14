@@ -35,7 +35,7 @@ resource "aws_apigatewayv2_stage" "lambda" {
   api_id                = aws_apigatewayv2_api.lambda.id
   auto_deploy           = true
   client_certificate_id = null
-  deployment_id         = aws_apigatewayv2_deployment.lambda.id
+  # deployment_id         = aws_apigatewayv2_deployment.lambda.id
   description           = "Created by AWS Lambda"
   name                  = "default"
   stage_variables       = {}
@@ -58,7 +58,7 @@ resource "aws_apigatewayv2_stage" "lambda_dev" {
   api_id                = aws_apigatewayv2_api.lambda.id
   auto_deploy           = true
   client_certificate_id = null
-  deployment_id         = aws_apigatewayv2_deployment.lambda.id
+  # deployment_id         = aws_apigatewayv2_deployment.lambda.id
   description           = "Created by AWS Lambda"
   name                  = "dev"
   stage_variables       = {}
