@@ -4,23 +4,46 @@ import json
 client = boto3.client('dynamodb')
 
 def lambda_handler(event, context):
+
+    stage = event.get('stage')
+
+    if stage == '$default':
      
-    # need to pull current value of counter then add +1
-    # then update value in dynamo
-    data = client.update_item(
-        Key={
-            "count id":{"N":"1"}
-        },
-        ExpressionAttributeNames={
-        "#ct": 'count',
-        },
-        ExpressionAttributeValues={
-            ":ct":{"N":"1"}                             
-        },
-        UpdateExpression="SET #ct = #ct + :ct",
-        TableName='visitors_counter',
-        ReturnValues='ALL_NEW',
-    )
+        # need to pull current value of counter then add +1
+        # then update value in dynamo
+        data = client.update_item(
+            Key={
+                "count id":{"N":"1"}
+            },
+            ExpressionAttributeNames={
+            "#ct": 'count',
+            },
+            ExpressionAttributeValues={
+                ":ct":{"N":"1"}                             
+            },
+            UpdateExpression="SET #ct = #ct + :ct",
+            TableName='visitors_counter',
+            ReturnValues='ALL_NEW',
+        )
+    else:
+
+        # need to pull current value of counter then add +1
+        # then update value in dynamo
+        data = client.update_item(
+            Key={
+                "count id":{"N":"2"}
+            },
+            ExpressionAttributeNames={
+            "#ct": 'count',
+            },
+            ExpressionAttributeValues={
+                ":ct":{"N":"1"}                             
+            },
+            UpdateExpression="SET #ct = #ct + :ct",
+            TableName='visitors_counter',
+            ReturnValues='ALL_NEW',
+        )
+
     
 
     return {
